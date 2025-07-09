@@ -4,72 +4,75 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>M.S Mobile Bill</title>
-  <link rel="stylesheet" href="ms.css" />
+  <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
 </head>
 <body>
-  <header>
-    <h2>M.S MOBILE</h2>
-    <p>Luna Nagar Bus Stop, Thadagam Road, Edayarpalayam, Coimbatore - 641025</p>
-    <p>Contact: 8248108883</p>
-  </header>
+  <div class="bill-container">
+    <header>
+      <h1>M.S MOBILE</h1>
+      <p>Luna Nagar Bus Stop, Thadagam Road, Edayarpalayam, Coimbatore - 641025</p>
+      <p><strong>Contact:</strong> 8248108883</p>
+    </header>
 
-  <section class="info">
-    <label>Customer Name:</label><input type="text" id="custName"><br>
-    <label>Phone Number:</label><input type="text" id="phone"><br>
-    <label>Date:</label><input type="date" id="date">
-  </section>
+    <section class="info">
+      <div><strong>Customer Name:</strong> <input type="text" id="custName"></div>
+      <div><strong>Phone Number:</strong> <input type="text" id="phone"></div>
+      <div><strong>Date:</strong> <input type="date" id="date"></div>
+    </section>
 
-  <section class="products">
-    <table id="productTable">
-      <thead>
-        <tr>
-          <th>Product</th>
-          <th>IMEI / ID</th>
-          <th>Qty</th>
-          <th>Price</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <section class="product-section">
+      <table id="productTable">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>IMEI / ID</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
 
-    <div class="add-product">
-      <select id="productType">
-        <option value="Mobile">Mobile</option>
-        <option value="Bluetooth">Bluetooth</option>
-        <option value="Charger">Charger</option>
-        <option value="Other">Other</option>
-      </select>
-      <input type="text" id="productId" placeholder="Scan or Enter IMEI">
-      <input type="number" id="qty" placeholder="Qty">
-      <input type="number" id="price" placeholder="Price">
-      <button onclick="addProduct()">Add Product</button>
-      <button onclick="startScanner()">📷 Scan IMEI</button>
-      <button onclick="generateBill()">🧾 Generate Bill</button>
+      <div class="add-product no-print">
+        <select id="productType">
+          <option value="Mobile">Mobile</option>
+          <option value="Bluetooth">Bluetooth</option>
+          <option value="Charger">Charger</option>
+          <option value="Other">Other</option>
+        </select>
+        <input type="text" id="productId" placeholder="IMEI (for Mobile)">
+        <input type="number" id="qty" placeholder="Qty">
+        <input type="number" id="price" placeholder="Price">
+        <button onclick="addProduct()">Add</button>
+        <button onclick="startScanner()">📷 Scan</button>
+        <button onclick="generateBill()">🧾 Generate Bill</button>
 
-      <div id="scannerContainer">
-        <div id="scanner"></div>
-        <button onclick="stopScanner()">❌ Close Scanner</button>
+        <div id="scannerContainer">
+          <div id="scanner"></div>
+          <button onclick="stopScanner()">❌ Close Scanner</button>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="summary">
-    <table>
-      <tr>
-        <td><strong>Total</strong></td>
-        <td id="totalCell">Rs 0</td>
-      </tr>
-    </table>
-  </section>
+    <section class="summary">
+      <table>
+        <tr>
+          <td><strong>Grand Total</strong></td>
+          <td id="totalCell">Rs 0.00</td>
+        </tr>
+      </table>
+    </section>
 
-  <footer class="footer">
-    <div>Seal</div>
-    <div>Signature</div>
-  </footer>
+    <footer class="footer">
+      <div class="seal">Seal</div>
+      <div class="signature">Signature</div>
+    </footer>
 
-  <p class="thanks">Thank You! Visit Again!</p>
+    <p class="thankyou">Thank You! Visit Again!</p>
+  </div>
+
   <script src="ms.js"></script>
 </body>
 </html>
