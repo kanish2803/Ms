@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M.S Mobile Bill</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+<body>
+  <h2>M.S MOBILE</h2>
+  <p>Luna Nagar Bus Stop, Thadagam Road, Edayarpalayam, Coimbatore - 641025</p>
+  <p>Contact: 8248108883</p>
+
+  <div class="info">
+    <label>Customer Name:</label><input type="text" id="custName"><br>
+    <label>Phone Number:</label><input type="text" id="phone"><br>
+    <label>Date:</label><input type="date" id="date">
+  </div>
+
+  <div class="products">
+    <table id="productTable">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>IMEI / ID</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="add-product">
+      <select id="productType">
+        <option value="Mobile">Mobile</option>
+        <option value="Bluetooth">Bluetooth</option>
+        <option value="Charger">Charger</option>
+        <option value="Other">Other</option>
+      </select>
+      <input type="text" id="productId" placeholder="IMEI / Product ID">
+      <input type="number" id="qty" placeholder="Qty">
+      <input type="number" id="price" placeholder="Price">
+      <button onclick="addProduct()">Add Product</button>
+      <button onclick="startScanner()">📷 Scan IMEI</button>
+      <div id="scanner" style="width:300px; margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <table>
+      <tr>
+        <td><strong>Total</strong></td>
+        <td id="totalCell">Rs 0</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    <div>Seal</div>
+    <div>Signature</div>
+  </div>
+
+  <p style="text-align:center; margin-top:20px;">Thank You! Visit Again!</p>
+
+  <script src="script.js"></script>
+</body>
+</html>
