@@ -45,3 +45,13 @@ table th, table td {
 .add-product {
   margin-top: 10px;
 }
+@media print {
+  button, .add-product, #barcode-scanner-container {
+    display: none !important;
+  }
+  body {
+    width: 148mm;
+    height: 210mm;
+    margin: 0;
+  }
+}
