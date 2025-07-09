@@ -34,6 +34,18 @@ function updateTotal() {
 }
 
 function generateBill() {
+  // Replace inputs with text before print
+  const custName = document.getElementById('custName').value;
+  const phone = document.getElementById('phone').value;
+  const date = document.getElementById('date').value;
+
+  document.querySelector('.info').innerHTML = `
+    <div><strong>Customer Name:</strong> ${custName}</div>
+    <div><strong>Phone Number:</strong> ${phone}</div>
+    <div><strong>Date:</strong> ${date}</div>
+  `;
+
+  stopScanner(); // Just in case scanner is open
   window.print();
 }
 
@@ -76,7 +88,9 @@ function startScanner() {
 }
 
 function stopScanner() {
-  Quagga.stop();
+  try {
+    Quagga.stop();
+  } catch (e) {}
   document.getElementById("scannerContainer").style.display = "none";
   document.getElementById("scanner").innerHTML = "";
 }
