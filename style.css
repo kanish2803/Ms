@@ -1,5 +1,6 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 16px;
   background: #fff;
   color: #000;
   margin: 0;
@@ -9,36 +10,41 @@ body {
   width: 148mm;
   padding: 20px;
   margin: auto;
-  box-sizing: border-box;
   border: 1px solid #000;
+  box-sizing: border-box;
 }
 header {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 header h1 {
   margin: 5px 0;
-  font-size: 22px;
+  font-size: 24px;
 }
 .info div {
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 input, select {
-  padding: 4px;
+  padding: 6px;
+  font-size: 16px;
   border: 1px solid #aaa;
   border-radius: 4px;
+}
+.add-product {
+  margin-top: 12px;
 }
 .add-product input,
 .add-product select {
   margin: 4px;
 }
 .add-product button {
-  padding: 6px 10px;
+  padding: 8px 12px;
   margin-top: 5px;
   background: #007bff;
   color: #fff;
   border: none;
   border-radius: 4px;
+  font-size: 15px;
   cursor: pointer;
 }
 .add-product button:hover {
@@ -57,14 +63,15 @@ input, select {
 .product-section table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 table, th, td {
   border: 1px solid #000;
 }
 th, td {
-  padding: 6px;
+  padding: 8px;
   text-align: center;
+  font-size: 16px;
 }
 .summary {
   margin-top: 20px;
@@ -84,17 +91,15 @@ th, td {
   text-align: center;
   line-height: 80px;
   font-weight: bold;
+  font-size: 18px;
 }
 .thankyou {
   text-align: center;
   margin-top: 20px;
+  font-weight: bold;
 }
 @media print {
-  .no-print, input, select {
+  .no-print, input, select, #scannerContainer {
     display: none !important;
-  }
-  input, select {
-    border: none;
-    outline: none;
   }
 }
