@@ -1,109 +1,82 @@
-function addProduct() {
-  const type = document.getElementById('productType').value;
-  const name = document.getElementById('productName').value;
-  const id = document.getElementById('productId').value;
-  const qty = parseInt(document.getElementById('qty').value);
-  const price = parseFloat(document.getElementById('price').value);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M.S Mobile Bill</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+  <div class="bill-container" id="bill">
+    <header>
+      <h1>M.S MOBILE</h1>
+      <p>Luna Nagar Bus Stop, Thadagam Road, Edayarpalayam, Coimbatore - 641025</p>
+      <p><strong>Contact:</strong> 8248108883</p>
+    </header>
 
-  if (!type || !name || (type === 'Mobile' && !id) || isNaN(qty) || isNaN(price)) return;
+    <section class="info">
+      <div><strong>Customer Name:</strong> <input type="text" id="custName"></div>
+      <div><strong>Phone Number:</strong> <input type="text" id="phone"></div>
+      <div><strong>Date:</strong> <input type="date" id="date"></div>
+    </section>
 
-  const total = qty * price;
-  const table = document.getElementById('productTable').querySelector('tbody');
-  const row = document.createElement('tr');
-  row.innerHTML = `
-    <td>${type}</td>
-    <td>${name}</td>
-    <td>${type === 'Mobile' ? id : '-'}</td>
-    <td>${qty}</td>
-    <td>Rs ${price.toFixed(2)}</td>
-    <td>Rs ${total.toFixed(2)}</td>
-  `;
-  table.appendChild(row);
-  updateTotal();
+    <section class="product-section">
+      <table id="productTable">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Product Name</th>
+            <th>IMEI / ID</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
 
-  document.getElementById('productName').value = '';
-  document.getElementById('productId').value = '';
-  document.getElementById('qty').value = '';
-  document.getElementById('price').value = '';
-}
+      <div class="add-product no-print">
+        <select id="productType">
+          <option value="Mobile">Mobile</option>
+          <option value="Bluetooth">Bluetooth</option>
+          <option value="Charger">Charger</option>
+          <option value="Other">Other</option>
+        </select>
+        <input type="text" id="productName" placeholder="Product Name">
+        <input type="text" id="productId" placeholder="IMEI (for Mobile)">
+        <input type="number" id="qty" placeholder="Qty">
+        <input type="number" id="price" placeholder="Price">
+        <button onclick="addProduct()">Add</button>
+        <button onclick="startScanner()">📷 Scan</button>
+        <button onclick="generateBill()">🧾 Generate Bill</button>
+        <button onclick="downloadPDF()">⬇️ Download PDF</button>
 
-function updateTotal() {
-  const rows = document.querySelectorAll('#productTable tbody tr');
-  let total = 0;
-  rows.forEach(row => {
-    const val = parseFloat(row.cells[5].innerText.replace('Rs ', ''));
-    total += val;
-  });
-  document.getElementById('totalCell').innerText = `Rs ${total.toFixed(2)}`;
-}
+        <div id="scannerContainer">
+          <div id="scanner"></div>
+          <button onclick="stopScanner()">❌ Close Scanner</button>
+        </div>
+      </div>
+    </section>
 
-function generateBill() {
-  const custName = document.getElementById('custName').value;
-  const phone = document.getElementById('phone').value;
-  const date = document.getElementById('date').value;
+    <section class="summary">
+      <table>
+        <tr>
+          <td><strong>Grand Total</strong></td>
+          <td id="totalCell">Rs 0.00</td>
+        </tr>
+      </table>
+    </section>
 
-  document.querySelector('.info').innerHTML = `
-    <div><strong>Customer Name:</strong> ${custName}</div>
-    <div><strong>Phone Number:</strong> ${phone}</div>
-    <div><strong>Date:</strong> ${date}</div>
-  `;
+    <footer class="footer">
+      <div class="seal">Seal</div>
+      <div class="signature">Signature</div>
+    </footer>
 
-  stopScanner();
-  window.print();
-}
+    <p class="thankyou">Thank You! Visit Again!</p>
+  </div>
 
-function downloadPDF() {
-  generateBill(); // updates customer info first
-  const element = document.getElementById("bill");
-  const opt = {
-    margin: 0,
-    filename: 'MS_Bill.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
-  };
-  html2pdf().set(opt).from(element).save();
-}
-
-document.getElementById('productType').addEventListener('change', function () {
-  document.getElementById('productId').style.display = (this.value === 'Mobile') ? 'inline-block' : 'none';
-});
-
-function startScanner() {
-  const container = document.getElementById("scannerContainer");
-  const scannerDiv = document.getElementById("scanner");
-  container.style.display = "block";
-  scannerDiv.innerHTML = "";
-
-  Quagga.init({
-    inputStream: {
-      name: "Live",
-      type: "LiveStream",
-      target: scannerDiv,
-      constraints: { facingMode: "environment" }
-    },
-    decoder: {
-      readers: ["code_128_reader", "ean_reader", "ean_8_reader"]
-    },
-    locate: true
-  }, function(err) {
-    if (err) {
-      console.error(err);
-      return;
-    }
-    Quagga.start();
-  });
-
-  Quagga.onDetected(function(result) {
-    if (result.codeResult && result.codeResult.code) {
-      document.getElementById("productId").value = result.codeResult.code;
-      stopScanner();
-    }
-  });
-}
-
-function stopScanner() {
-  try { Quagga.stop(); } catch (e) {}
-  document.getElementById("scannerContainer").style.display = "none";
-  document.getElementById("scanner").innerHTML = "";
-}
+  <script src="script.js"></script>
+</body>
+</html>
