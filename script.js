@@ -38,31 +38,38 @@ function updateTotal() {
 }
 
 function generateBill() {
-  const custName = document.getElementById('custName').value;
-  const phone = document.getElementById('phone').value;
-  const date = document.getElementById('date').value;
-
-  document.querySelector('.info').innerHTML = `
-    <div><strong>Customer Name:</strong> ${custName}</div>
-    <div><strong>Phone Number:</strong> ${phone}</div>
-    <div><strong>Date:</strong> ${date}</div>
-  `;
-
   stopScanner();
   window.print();
 }
 
 function downloadPDF() {
-  generateBill(); // updates customer info first
+  stopScanner();
+
+  const info = document.querySelector('.info');
+  const original = info.innerHTML;
+
+  const custName = document.getElementById('custName').value;
+  const phone = document.getElementById('phone').value;
+  const date = document.getElementById('date').value;
+
+  info.innerHTML = `
+    <div><strong>Customer Name:</strong> ${custName}</div>
+    <div><strong>Phone Number:</strong> ${phone}</div>
+    <div><strong>Date:</strong> ${date}</div>
+  `;
+
   const element = document.getElementById("bill");
   const opt = {
     margin: 0,
-    filename: 'MS_Bill.pdf',
+    filename: `Bill_${custName || 'Customer'}.pdf`,
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2 },
     jsPDF: { unit: 'mm', format: 'a5', orientation: 'portrait' }
   };
-  html2pdf().set(opt).from(element).save();
+
+  html2pdf().set(opt).from(element).save().then(() => {
+    info.innerHTML = original;
+  });
 }
 
 document.getElementById('productType').addEventListener('change', function () {
