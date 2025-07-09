@@ -16,8 +16,8 @@ function addProduct() {
     <td>Rs ${total.toFixed(2)}</td>
   `;
   table.appendChild(row);
-
   updateTotal();
+
   document.getElementById('productId').value = '';
   document.getElementById('qty').value = '';
   document.getElementById('price').value = '';
@@ -25,22 +25,30 @@ function addProduct() {
 
 function updateTotal() {
   const rows = document.querySelectorAll('#productTable tbody tr');
-  let grandTotal = 0;
+  let total = 0;
   rows.forEach(row => {
-    const total = parseFloat(row.cells[4].innerText.replace('Rs ', ''));
-    grandTotal += total;
+    const val = parseFloat(row.cells[4].innerText.replace('Rs ', ''));
+    total += val;
   });
-  document.getElementById('totalCell').innerText = `Rs ${grandTotal.toFixed(2)}`;
+  document.getElementById('totalCell').innerText = `Rs ${total.toFixed(2)}`;
 }
 
-function startBarcodeScanner() {
-  const container = document.getElementById("barcode-scanner-container");
-  const scannerDiv = document.getElementById("barcode-scanner");
-  scannerDiv.innerHTML = "";
-  container.style.display = "block";
+function generateBill() {
+  window.print();
+}
 
+document.getElementById('productType').addEventListener('change', function () {
+  document.getElementById('productId').style.display = (this.value === 'Mobile') ? 'inline-block' : 'none';
+});
+
+// SCANNER FUNCTIONS
+function startScanner() {
+  const container = document.getElementById("scannerContainer");
+  const scannerDiv = document.getElementById("scanner");
+  container.style.display = "block";
   Quagga.init({
     inputStream: {
+      name: "Live",
       type: "LiveStream",
       target: scannerDiv,
       constraints: {
@@ -49,7 +57,8 @@ function startBarcodeScanner() {
     },
     decoder: {
       readers: ["code_128_reader", "ean_reader", "ean_8_reader"]
-    }
+    },
+    locate: true
   }, function(err) {
     if (err) {
       console.error(err);
@@ -59,31 +68,15 @@ function startBarcodeScanner() {
   });
 
   Quagga.onDetected(function(result) {
-    const code = result.codeResult.code;
-    document.getElementById("productId").value = code;
-    stopBarcodeScanner();
+    if (result.codeResult && result.codeResult.code) {
+      document.getElementById("productId").value = result.codeResult.code;
+      stopScanner();
+    }
   });
 }
 
-function stopBarcodeScanner() {
-  const container = document.getElementById("barcode-scanner-container");
-  const scannerDiv = document.getElementById("barcode-scanner");
-  try {
-    Quagga.stop();
-  } catch (e) {}
-  scannerDiv.innerHTML = "";
-  container.style.display = "none";
-}
-
-document.getElementById('productType').addEventListener('change', function () {
-  const productIdField = document.getElementById('productId');
-  if (this.value === 'Mobile') {
-    productIdField.style.display = 'inline';
-  } else {
-    productIdField.style.display = 'none';
-  }
-});
-
-function generateBill() {
-  window.print();
+function stopScanner() {
+  Quagga.stop();
+  document.getElementById("scannerContainer").style.display = "none";
+  document.getElementById("scanner").innerHTML = "";
 }
