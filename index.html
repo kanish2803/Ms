@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,6 +6,38 @@
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    .seal, .signature {
+      height: 120px;
+      font-size: 20px;
+    }
+    #scannerContainer {
+      display: none;
+      margin-top: 20px;
+      position: relative;
+    }
+    #scanner {
+      width: 100%;
+      height: 220px;
+      border: 2px solid #007bff;
+      position: relative;
+    }
+    #scanner::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: red;
+      animation: scanline 2s infinite;
+    }
+    @keyframes scanline {
+      0% { top: 0; }
+      50% { top: 100%; }
+      100% { top: 0; }
+    }
+  </style>
 </head>
 <body>
   <div class="bill-container" id="bill">
@@ -14,69 +45,65 @@
       <h1>M.S MOBILE</h1>
       <p>Luna Nagar Bus Stop, Thadagam Road, Edayarpalayam, Coimbatore - 641025</p>
       <p><strong>Contact:</strong> 8248108883</p>
-    </header>
+    </header><section class="info">
+  <div><strong>Customer Name:</strong> <input type="text" id="custName"></div>
+  <div><strong>Phone Number:</strong> <input type="text" id="phone"></div>
+  <div><strong>Date:</strong> <input type="date" id="date"></div>
+</section>
 
-    <section class="info">
-      <div><strong>Customer Name:</strong> <input type="text" id="custName" placeholder="Enter name"></div>
-      <div><strong>Phone Number:</strong> <input type="text" id="phone" placeholder="Enter phone number"></div>
-      <div><strong>Date:</strong> <input type="date" id="date"></div>
-    </section>
+<section class="product-section">
+  <table id="productTable">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Product Name</th>
+        <th>IMEI / ID</th>
+        <th>Qty</th>
+        <th>Price</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
 
-    <section class="product-section">
-      <table id="productTable">
-        <thead>
-          <tr>
-            <th>Type</th>
-            <th>Product Name</th>
-            <th>IMEI / ID</th>
-            <th>Qty</th>
-            <th>Price</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
+  <div class="add-product no-print">
+    <select id="productType">
+      <option value="Mobile">Mobile</option>
+      <option value="Bluetooth">Bluetooth</option>
+      <option value="Charger">Charger</option>
+      <option value="Other">Other</option>
+    </select>
+    <input type="text" id="productName" placeholder="Product Name">
+    <input type="text" id="productId" placeholder="IMEI (for Mobile)">
+    <input type="number" id="qty" placeholder="Qty">
+    <input type="number" id="price" placeholder="Price">
+    <button onclick="addProduct()">Add</button>
+    <button onclick="startScanner()">📷 Scan</button>
+    <button onclick="generateBill()">🧾 Generate Bill</button>
+    <button onclick="downloadPDF()">⬇️ Download PDF</button>
 
-      <div class="add-product no-print">
-        <select id="productType">
-          <option value="Mobile">Mobile</option>
-          <option value="Bluetooth">Bluetooth</option>
-          <option value="Charger">Charger</option>
-          <option value="Other">Other</option>
-        </select>
-        <input type="text" id="productName" placeholder="Product Name">
-        <input type="text" id="productId" placeholder="IMEI (for Mobile)">
-        <input type="number" id="qty" placeholder="Qty">
-        <input type="number" id="price" placeholder="Price">
-        <button onclick="addProduct()">Add</button>
-        <button onclick="startScanner()">📷 Scan</button>
-        <button onclick="generateBill()">🧾 Generate Bill</button>
-        <button onclick="downloadPDF()">⬇️ Download PDF</button>
-
-        <div id="scannerContainer">
-          <div id="scanner"></div>
-          <button onclick="stopScanner()">Close Scanner</button>
-        </div>
-      </div>
-    </section>
-
-    <section class="summary">
-      <table>
-        <tr>
-          <td><strong>Grand Total</strong></td>
-          <td id="totalCell">Rs 0.00</td>
-        </tr>
-      </table>
-    </section>
-
-    <footer class="footer">
-      <div class="seal">Seal</div>
-      <div class="signature">Signature</div>
-    </footer>
-
-    <p class="thankyou">Thank You! Visit Again!</p>
+    <div id="scannerContainer">
+      <div id="scanner"></div>
+      <button onclick="stopScanner()">❌ Close Scanner</button>
+    </div>
   </div>
+</section>
 
-  <script src="script.js"></script>
-</body>
+<section class="summary">
+  <table>
+    <tr>
+      <td><strong>Grand Total</strong></td>
+      <td id="totalCell">Rs 0.00</td>
+    </tr>
+  </table>
+</section>
+
+<footer class="footer">
+  <div class="seal">Seal</div>
+  <div class="signature">Signature</div>
+</footer>
+
+<p class="thankyou">Thank You! Visit Again!</p>
+
+  </div>  <script src="script.js"></script></body>
 </html>
