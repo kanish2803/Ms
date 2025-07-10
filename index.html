@@ -8,34 +8,61 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     .seal, .signature {
-      height: 120px;
-      font-size: 20px;
+      height: 160px;
+      font-size: 22px;
+      border: 2px dashed #444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 10px;
+    }
+    .footer {
+      display: flex;
+      justify-content: space-between;
     }
     #scannerContainer {
       display: none;
       margin-top: 20px;
       position: relative;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      background: #f9f9f9;
     }
     #scanner {
       width: 100%;
-      height: 220px;
+      height: 180px;
       border: 2px solid #007bff;
       position: relative;
+      box-sizing: border-box;
     }
     #scanner::after {
       content: "";
       position: absolute;
-      top: 50%;
+      top: 0;
       left: 0;
       width: 100%;
       height: 2px;
       background: red;
-      animation: scanline 2s infinite;
+      animation: scanline 2s infinite linear;
     }
     @keyframes scanline {
       0% { top: 0; }
-      50% { top: 100%; }
+      50% { top: calc(100% - 2px); }
       100% { top: 0; }
+    }
+    #scannerContainer button {
+      display: block;
+      margin: 10px auto 0;
+      padding: 5px 10px;
+      background: #dc3545;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
     }
   </style>
 </head>
